@@ -12,20 +12,28 @@ public class SimpleUsersServiceImpl implements SimpleUsersService {
 
     private UsersDao usersDao;
 
-    public SimpleUsersServiceImpl(UsersDao usersDao) {
-        this.usersDao = usersDao;
+    public SimpleUsersServiceImpl() {
+
     }
 
     public boolean isRegistered(String userName, String userPassword) {
-        List<User> registeredUsers = usersDao.getAll();
+        if(usersDao != null) {
+            List<User> registeredUsers = usersDao.getAll();
 
-        for (User user : registeredUsers) {
-            if (user.getName().equals(userName) &&
-                    user.getPassword().equals(userPassword)) {
-                return true;
+            for (User user : registeredUsers) {
+                if (user.getName().equals(userName) &&
+                        user.getPassword().equals(userPassword)) {
+                    return true;
+                }
             }
+        }else {
+            throw new IllegalArgumentException("UsersDao wasn't specified");
         }
 
         return false;
+    }
+
+    public void setUsersDao(UsersDao usersDao){
+        this.usersDao = usersDao;
     }
 }

@@ -6,6 +6,7 @@ import ru.itis.models.User;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public class UsersDaoFileBasedImpl implements UsersDao {
 
@@ -16,11 +17,24 @@ public class UsersDaoFileBasedImpl implements UsersDao {
 
     private static final String EOL = System.getProperty("line.separator");
 
-    public UsersDaoFileBasedImpl(String filePath, String inFileName, String outFileName) {
-        inputPath = filePath + inFileName;
-        outputPath = filePath + outFileName;
-        openOutStream();
-        openInStream();
+    public UsersDaoFileBasedImpl() {
+        Properties properties = new Properties();
+        try {
+            properties.load(new FileInputStream("C:\\Users\\KFU-user\\Desktop\\JavaItis\\SimpleEnterpriseMaven\\"+
+                    "src\\main\\resources\\usersdao.properties"));
+            inputPath = properties.getProperty("dao.filepathitis") + properties.getProperty("dao.inputfile");
+            outputPath = properties.getProperty("dao.filepathitis") + properties.getProperty("dao.outputfile");
+        } catch (IOException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    public void setInputPath(String inputPath) {
+        this.inputPath = inputPath;
+    }
+
+    public void setOutputPath(String outputPath) {
+        this.outputPath = outputPath;
     }
 
     public List<User> getAll() {
