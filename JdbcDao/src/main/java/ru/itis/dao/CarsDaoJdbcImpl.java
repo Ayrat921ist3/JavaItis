@@ -1,6 +1,7 @@
 package ru.itis.dao;
 
 import ru.itis.models.Car;
+import ru.itis.models.JdbcModel;
 
 import java.util.List;
 
@@ -21,11 +22,11 @@ public class CarsDaoJdbcImpl implements Dao {
 
     }
 
-    public void update(Object obj) {
+    public void update(JdbcModel obj) {
 
     }
 
-    public void add(Object obj) {
+    public void add(JdbcModel obj) {
 
     }
 }

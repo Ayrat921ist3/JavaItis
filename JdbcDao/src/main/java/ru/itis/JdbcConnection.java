@@ -12,8 +12,10 @@ public class JdbcConnection {
     private static JdbcConnection instance;
     private Connection connection;
     private static final String DATA_BASE_URL = "jdbc:postgresql://localhost:5432/postgres";
+    private static final String DATA_BASE_URL_HOME = "jdbc:postgresql://localhost:5432/usersDB";
     private static final String USER_DB_NAME = "postgres";
     private static final String USER_DB_PASSWORD = "Vypapos88";
+
     static {
         instance = new JdbcConnection();
     }

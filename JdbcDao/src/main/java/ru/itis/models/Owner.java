@@ -3,7 +3,7 @@ package ru.itis.models;
 /**
  * Created by KFU-user on 12.10.2016.
  */
-public class Owner {
+public class Owner extends JdbcModel {
 
     private String name;
     private int id;
@@ -13,6 +13,12 @@ public class Owner {
     public Owner(String name, int id, String city, int age) {
         this.name = name;
         this.id = id;
+        this.city = city;
+        this.age = age;
+    }
+
+    public Owner(String name, String city, int age) {
+        this.name = name;
         this.city = city;
         this.age = age;
     }

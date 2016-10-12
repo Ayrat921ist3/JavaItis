@@ -16,6 +16,19 @@ public class Main {
         OwnersDaoJdbcImpl ownersDaoJdbc = new OwnersDaoJdbcImpl(connection);
 
         System.out.println(ownersDaoJdbc.find(1));
+        System.out.println();
+
+        for (Owner owner : ownersDaoJdbc.getAll()){
+            System.out.println(owner);
+        }
+
+        ownersDaoJdbc.delete(2);
+
+        ownersDaoJdbc.update(new Owner("Vasiliy", 1, "Moscow", 25));
+
+        ownersDaoJdbc.add(new Owner("John", "New York", 43));
+
+        System.out.println();
 
         for (Owner owner : ownersDaoJdbc.getAll()){
             System.out.println(owner);

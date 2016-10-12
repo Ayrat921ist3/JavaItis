@@ -1,5 +1,6 @@
 package ru.itis.dao;
 
+import ru.itis.models.JdbcModel;
 import ru.itis.models.Owner;
 
 import java.sql.Connection;
@@ -24,6 +25,22 @@ public class OwnersDaoJdbcImpl implements Dao {
     private static final String FIND_ALL_QUERY =
             "SELECT owner_id, name, city, age" +
                     " FROM test.owners";
+
+    //language = SQL
+    private static final String DELETE_BY_ID_QUERY =
+            "DELETE FROM test.owners" +
+                    " WHERE owner_id = ?";
+
+    //language = SQL;
+    private static final String UPDATE_QUERY =
+            "UPDATE test.owners " +
+                    " SET name = ?, city = ?, age = ? " +
+                    " WHERE owner_id = ?";
+
+    //language = SQL
+    private static final String INSERT_QUERY =
+            "INSERT INTO test.owners (name, city, age)" +
+                    " VALUES (?, ?, ?)";
 
     private Connection connection;
 
@@ -52,25 +69,54 @@ public class OwnersDaoJdbcImpl implements Dao {
 
             ResultSet result = statement.executeQuery();
             List<Owner> owners = new ArrayList<Owner>();
-            while (result.next()){
+            while (result.next()) {
                 owners.add(new Owner(result.getString("name"), result.getInt("owner_id"),
                         result.getString("city"), result.getInt("age")));
             }
             return owners;
-        } catch (SQLException e){
+        } catch (SQLException e) {
             throw new IllegalArgumentException(e);
         }
     }
 
     public void delete(int id) {
-
+        try {
+            PreparedStatement statement = connection.prepareStatement(DELETE_BY_ID_QUERY);
+            statement.setInt(1, id);
+            statement.execute();
+        } catch (SQLException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 
-    public void update(Object obj) {
-
+    public void update(JdbcModel obj) {
+        try {
+            Owner owner = (Owner) obj;
+            PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY);
+            statement.setString(1, owner.getName());
+            statement.setString(2, owner.getCity());
+            statement.setInt(3, owner.getAge());
+            statement.setInt(4, owner.getId());
+            statement.execute();
+        } catch (ClassCastException e) {
+            throw new IllegalArgumentException(e);
+        } catch (SQLException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 
-    public void add(Object obj) {
-
+    public void add(JdbcModel obj) {
+        try {
+            Owner owner = (Owner) obj;
+            PreparedStatement statement = connection.prepareStatement(INSERT_QUERY);
+            statement.setString(1, owner.getName());
+            statement.setString(2, owner.getCity());
+            statement.setInt(3, owner.getAge());
+            statement.execute();
+        } catch (SQLException e) {
+            throw new IllegalArgumentException(e);
+        } catch (ClassCastException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 }
