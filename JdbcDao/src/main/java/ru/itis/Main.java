@@ -1,9 +1,9 @@
 package ru.itis;
 
-import ru.itis.dao.OwnersDaoJdbcImpl;
+import ru.itis.factory.ServiceFactory;
 import ru.itis.models.Owner;
-
-import java.sql.Connection;
+import ru.itis.services.OwnerService;
+import ru.itis.services.OwnerServiceImpl;
 
 /**
  * Created by KFU-user on 12.10.2016.
@@ -11,26 +11,24 @@ import java.sql.Connection;
 public class Main {
 
     public static void main(String[] args) {
-        Connection connection = JdbcConnection.getInstance().getConnection();
+        OwnerService ownerService = ServiceFactory.getInstance().getOwnerService();
 
-        OwnersDaoJdbcImpl ownersDaoJdbc = new OwnersDaoJdbcImpl(connection);
-
-        System.out.println(ownersDaoJdbc.find(1));
+        System.out.println(ownerService.findOwner(1));
         System.out.println();
 
-        for (Owner owner : ownersDaoJdbc.getAll()){
+        for (Owner owner : ownerService.getOwners()){
             System.out.println(owner);
         }
 
-        ownersDaoJdbc.delete(2);
+        ownerService.deleteOwner(2);
 
-        ownersDaoJdbc.update(new Owner("Vasiliy", 1, "Moscow", 25));
+        ownerService.updateOwner(new Owner("Vasiliy", 1, "Moscow", 25));
 
-        ownersDaoJdbc.add(new Owner("John", "New York", 43));
+        ownerService.addOwner(new Owner("John", "New York", 43));
 
         System.out.println();
 
-        for (Owner owner : ownersDaoJdbc.getAll()){
+        for (Owner owner : ownerService.getOwners()){
             System.out.println(owner);
         }
     }

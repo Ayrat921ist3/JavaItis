@@ -15,6 +15,11 @@ public class Car extends JdbcModel  {
         this.ownerId = ownerId;
     }
 
+    public Car(int mileage, int ownerId) {
+        this.mileage = mileage;
+        this.ownerId = ownerId;
+    }
+
     public int getId() {
         return id;
     }
