@@ -79,6 +79,7 @@ public class OwnersDaoJdbcImpl implements Dao {
         }
     }
 
+    @SuppressWarnings("all")
     public void delete(int id) {
         try {
             PreparedStatement statement = connection.prepareStatement(DELETE_BY_ID_QUERY);
