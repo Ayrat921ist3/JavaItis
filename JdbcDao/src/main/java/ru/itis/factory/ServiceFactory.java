@@ -30,6 +30,7 @@ public class ServiceFactory {
         properties = new Properties();
         try {
             properties.load(new FileInputStream("C:\\Users\\KFU-user\\Desktop\\JavaItis\\JdbcDao\\src\\main\\resources\\service.properties"));
+//            properties.load(new FileInputStream("C:\\Users\\Ayrat\\Desktop\\JavaItis\\JdbcDao\\src\\main\\resources\\service.properties"));
             String ownerServiceClassName = properties.getProperty("service.owner_class");
             Class clazz = Class.forName(ownerServiceClassName);
 

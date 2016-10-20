@@ -27,6 +27,7 @@ public class DaoJdbcImplFactory {
         try{
             properties = new Properties();
             properties.load(new FileInputStream("C:\\Users\\KFU-user\\Desktop\\JavaItis\\JdbcDao\\src\\main\\resources\\dao.properties"));
+//            properties.load(new FileInputStream("C:\\Users\\Ayrat\\Desktop\\JavaItis\\JdbcDao\\src\\main\\resources\\dao.properties"));
             String ownerDaoClass = properties.getProperty("dao.owners_class");
             Class clazz = Class.forName(ownerDaoClass);
             Constructor constructor = clazz.getConstructor(Connection.class);

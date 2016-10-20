@@ -30,8 +30,22 @@ public class UsersServlet extends HttpServlet {
         List<Owner> users = usersService.getOwners();
         if (users != null) {
             req.setAttribute("myUsers", users);
-            getServletContext().getRequestDispatcher("/user.jsp").forward(req, resp);
+            getServletContext().getRequestDispatcher("/user_form.jsp").forward(req, resp);
         }
 
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String name = req.getParameter("name");
+        String city = req.getParameter("city");
+        String age = req.getParameter("age");
+        Owner owner = new Owner(name, city, Integer.parseInt(age));
+        usersService.addOwner(owner);
+        List<Owner> users = usersService.getOwners();
+        if (users != null) {
+            req.setAttribute("myUsers", users);
+            getServletContext().getRequestDispatcher("/user_form.jsp").forward(req, resp);
+        }
     }
 }
