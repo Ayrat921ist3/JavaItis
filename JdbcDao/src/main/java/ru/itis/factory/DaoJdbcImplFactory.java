@@ -1,6 +1,5 @@
 package ru.itis.factory;
 
-import org.postgresql.core.ConnectionFactory;
 import ru.itis.dao.CarsDaoJdbcImpl;
 import ru.itis.dao.OwnersDaoJdbcImpl;
 
