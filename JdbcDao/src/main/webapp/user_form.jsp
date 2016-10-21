@@ -14,13 +14,12 @@
 </head>
 <body>
 
-
 <form action="users" method="post">
     <p><b>Заполните все поля</b></p>
     <p><input type="text" name="name" value=""> Имя<Br>
         <input type="text" name="city" value=""> Город<Br>
         <input type="text" name="age" value=""> Возраст</p>
-    <p><input type="submit" value="Создать"></p>
+    <p><input type="submit" value="Создать" onclick=""></p>
 </form>
 
 <c:forEach items="${requestScope.myUsers}" var="currentUser">

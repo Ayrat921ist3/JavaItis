@@ -27,7 +27,7 @@ public class JdbcConnectionFactory {
             properties.load(new FileInputStream("C:\\Users\\KFU-user\\Desktop\\JavaItis\\JdbcDao\\src\\main\\resources\\connection.properties"));
 //            properties.load(new FileInputStream("C:\\Users\\Ayrat\\Desktop\\JavaItis\\JdbcDao\\src\\main\\resources\\connection.properties"));
             String driver = properties.getProperty("jdbc.driver");
-            String url = properties.getProperty("jdbc.url");
+            String url = properties.getProperty("jdbc.db_url");
             String password = properties.getProperty("jdbc.password");
             String username = properties.getProperty("jdbc.username");
             System.out.println("=" + driver + "=");
