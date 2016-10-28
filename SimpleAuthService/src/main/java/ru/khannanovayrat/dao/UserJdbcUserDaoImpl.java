@@ -5,13 +5,15 @@ import ru.khannanovayrat.models.NewUser;
 import ru.khannanovayrat.models.User;
 import ru.khannanovayrat.util.Password;
 
+import javax.sql.DataSource;
 import java.sql.*;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Ayrat on 25.10.2016.
  */
-public class UserJdbcDaoImpl implements Dao {
+public class UserJdbcUserDaoImpl implements UserDao {
 
     //language=SQL
     private static final String USER_SELECT_QUERY =
@@ -35,11 +37,21 @@ public class UserJdbcDaoImpl implements Dao {
                     " FROM auth_user" +
                     " WHERE username = ? AND password = ?";
 
+    //language = SQL
+    public static final String ALL_USERS_SQL =
+            "SELECT *" +
+                    " FROM auth_user";
+
     private final Connection connection;
 
-    public UserJdbcDaoImpl(Connection connection) {
-        this.connection = connection;
+    public UserJdbcUserDaoImpl(DataSource dataSource) {
+        try {
+            this.connection = dataSource.getConnection();
+        } catch (SQLException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
+
 
     public User getUser(int id) {
         try {
@@ -84,6 +96,22 @@ public class UserJdbcDaoImpl implements Dao {
             preparedStatement.setString(4, user.getUsername());
             preparedStatement.setInt(5, user.getId());
             preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    public List<User> getAll() {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(ALL_USERS_SQL);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<User> users = new ArrayList<User>();
+            while (resultSet.next()){
+                users.add(new User(resultSet.getInt("user_id"), resultSet.getString("fio"),
+                    resultSet.getString("password"), resultSet.getString("token"),
+                        resultSet.getString("username")));
+            }
+            return users;
         } catch (SQLException e) {
             throw new IllegalArgumentException(e);
         }

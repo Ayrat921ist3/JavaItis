@@ -1,6 +1,6 @@
 package ru.khannanovayrat.factory;
 
-import ru.khannanovayrat.dao.Dao;
+import ru.khannanovayrat.dao.UserDao;
 import ru.khannanovayrat.service.UserService;
 
 import java.io.FileInputStream;
@@ -24,12 +24,14 @@ public class UserServiceFactory {
     private UserServiceFactory() {
         Properties properties = new Properties();
         try {
-            properties.load(new FileInputStream("C:\\Users\\Ayrat\\Desktop\\" +
-                    "JavaItis\\SimpleAuthService\\src\\main\\resources\\service.properties"));
+//            properties.load(new FileInputStream("C:\\Users\\Ayrat\\Desktop\\" +
+//                    "JavaItis\\SimpleAuthService\\src\\main\\resources\\service.properties"));
+            properties.load(new FileInputStream("C:\\Users\\KFU-user\\Desktop\\JavaItis\\" +
+                    "SimpleAuthService\\src\\main\\resources\\service.properties"));
             String className = properties.getProperty("service.className");
             Class clazz = Class.forName(className);
-            Constructor constructor = clazz.getConstructor(Dao.class);
-            userService = (UserService) constructor.newInstance(DaoFactory.getInstance().getDao());
+            Constructor constructor = clazz.getConstructor(UserDao.class);
+            userService = (UserService) constructor.newInstance(DaoFactory.getInstance().getUserDao());
         } catch (IOException e) {
             throw new IllegalArgumentException(e);
         } catch (ClassNotFoundException e) {

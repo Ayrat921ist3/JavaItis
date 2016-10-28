@@ -1,5 +1,7 @@
 package ru.khannanovayrat.servlet;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.khannanovayrat.factory.UserServiceFactory;
 import ru.khannanovayrat.models.NewUser;
 import ru.khannanovayrat.service.UserService;
@@ -21,7 +23,8 @@ public class RegistrationServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         super.init();
-        userService = UserServiceFactory.getInstance().getUserService();
+        ApplicationContext context = new ClassPathXmlApplicationContext("classpath:context.xml");
+        userService = (UserService) context.getBean("userService");
     }
 
     @Override

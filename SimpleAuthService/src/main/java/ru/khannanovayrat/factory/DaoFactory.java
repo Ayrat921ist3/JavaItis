@@ -1,7 +1,7 @@
 package ru.khannanovayrat.factory;
 
-import ru.khannanovayrat.dao.Dao;
-import ru.khannanovayrat.dao.UserJdbcDaoImpl;
+import ru.khannanovayrat.dao.UserDao;
+import ru.khannanovayrat.dao.UserJdbcUserDaoImpl;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -15,7 +15,7 @@ import java.util.Properties;
  */
 public class DaoFactory {
     private static DaoFactory instance;
-    private Dao dao;
+    private UserDao userDao;
 
     static{
         instance = new DaoFactory();
@@ -24,13 +24,15 @@ public class DaoFactory {
     private DaoFactory(){
         Properties properties = new Properties();
         try {
-            properties.load(new FileInputStream("C:\\Users\\Ayrat\\Desktop\\" +
-                    "JavaItis\\SimpleAuthService\\src\\main\\resources\\dao.properties"));
+//            properties.load(new FileInputStream("C:\\Users\\Ayrat\\Desktop\\" +
+//                    "JavaItis\\SimpleAuthService\\src\\main\\resources\\userDao.properties"));
+            properties.load(new FileInputStream("C:\\Users\\KFU-user\\Desktop\\JavaItis" +
+                    "\\SimpleAuthService\\src\\main\\resources\\userDao.properties"));
             String userDaoClassName = properties.getProperty("dao.className");
             Class clazz = Class.forName(userDaoClassName);
             Constructor constructor = clazz.getConstructor(Connection.class);
             Connection connection = ConnectionFactory.getInstance().getConnection();
-            dao = (UserJdbcDaoImpl)constructor.newInstance(connection);
+            userDao = (UserJdbcUserDaoImpl)constructor.newInstance(connection);
         } catch (IOException e) {
             throw new IllegalArgumentException(e);
         } catch (ClassNotFoundException e) {
@@ -50,7 +52,7 @@ public class DaoFactory {
         return instance;
     }
 
-    public UserJdbcDaoImpl getDao(){
-        return (UserJdbcDaoImpl) dao;
+    public UserJdbcUserDaoImpl getUserDao(){
+        return (UserJdbcUserDaoImpl) userDao;
     }
 }

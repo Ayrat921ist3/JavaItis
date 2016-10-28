@@ -31,9 +31,9 @@ public class Verifier {
 
     //language = SQL
     public static final String CHECK_TOKEN_SQL =
-            "SELECT *" +
+            "SELECT token" +
                     " FROM auth_user" +
-                    " WHERE token = ?";
+                    " WHERE token LIKE ?";
 
     public static boolean verifyUsernameExist(String username){
         try {
