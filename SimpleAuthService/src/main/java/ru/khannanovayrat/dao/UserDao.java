@@ -20,4 +20,6 @@ public interface UserDao {
     User getUser(String name, String password);
 
     User getUser(String token);
+
+    void deleteToken(String token);
 }

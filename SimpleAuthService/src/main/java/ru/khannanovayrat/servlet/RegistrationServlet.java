@@ -39,7 +39,7 @@ public class RegistrationServlet extends HttpServlet {
         String fio = req.getParameter("fio");
         String sign = req.getParameter("signin");
         if(sign != null){
-            resp.sendRedirect(req.getContextPath() + "/login");
+            resp.sendRedirect("/login");
             return;
         }
         if(!Verifier.verifyUsernameExist(username)) {

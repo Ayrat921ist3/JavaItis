@@ -8,7 +8,8 @@
 <form action="login" method="post">
     <p><input type="text" name="username"> Имя пользователя</p>
     <p><input type="password" name="password"> Пароль</p>
-    <input type="submit" name="sign in">
+    <input type="submit" value="sign in" name="sign in">
+    <input type="submit" value="sign up" name="signup">
 </form>
 </body>
 </html>

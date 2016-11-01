@@ -63,6 +63,6 @@ public class User {
 
     @Override
     public String toString() {
-        return String.format("%d %s %s %s ", id, fio, password, token);
+        return String.format("%d, %s, %s, %s ", id, fio, password, token);
     }
 }

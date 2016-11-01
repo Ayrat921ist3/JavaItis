@@ -53,4 +53,9 @@ public class Car {
     public void setModel(String model) {
         this.model = model;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%d %s %d %d", id, model, mileage, owner_id);
+    }
 }

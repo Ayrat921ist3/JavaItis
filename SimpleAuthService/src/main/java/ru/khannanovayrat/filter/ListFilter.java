@@ -5,12 +5,16 @@ import ru.khannanovayrat.util.Verifier;
 import javax.servlet.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 /**
  * Created by Ayrat on 26.10.2016.
  */
 public class ListFilter implements Filter {
+
+    private static Logger log = Logger.getLogger(ListFilter.class.getName());
 
     public void init(FilterConfig filterConfig) throws ServletException {
 
@@ -20,14 +24,16 @@ public class ListFilter implements Filter {
         for (Cookie cookie : ((HttpServletRequest)servletRequest).getCookies()){
             String cookieValue = cookie.getValue();
             if (cookie.getName().equals("token") && Verifier.verifyTokenValid(cookieValue)){
-                System.out.println("Doing filter, \n" +
+                log.info("Doing filter, \n" +
                         ".. Token found");
                 servletRequest.setAttribute("user_token", cookieValue);
                 filterChain.doFilter(servletRequest, servletResponse);
                 return;
             }
         }
-        System.out.println("Can't find user with this token.");
+        log.info("Can't find user with this token.");
+        log.info("redirecting to login");
+        ((HttpServletResponse)servletResponse).sendRedirect("/login");
     }
 
     public void destroy() {

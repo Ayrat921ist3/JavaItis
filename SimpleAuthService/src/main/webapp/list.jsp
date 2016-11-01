@@ -6,9 +6,10 @@
 </head>
 <body>
 <form action="list" method="post">
+    <p><input type="submit" value="logout" name="logout"></p>
     <p><input type="text" name="model"> Модель</p>
     <p><input type="text" name="mileage"> Пробег</p>
-    <p><input type="submit" value="add car"></p>
+    <p><input type="submit" value="add car" name="addcar"></p>
 </form>
 
 <tr>

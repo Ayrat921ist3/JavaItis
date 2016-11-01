@@ -1,5 +1,7 @@
 package ru.khannanovayrat.models;
 
+import ru.khannanovayrat.util.Password;
+
 /**
  * Created by Ayrat on 25.10.2016.
  */
@@ -37,5 +39,10 @@ public class NewUser {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s, %s, %s", fio, Password.hash(password), username);
     }
 }

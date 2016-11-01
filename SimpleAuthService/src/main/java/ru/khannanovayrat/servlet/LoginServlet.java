@@ -39,6 +39,10 @@ public class LoginServlet extends HttpServlet{
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
+        String sign = req.getParameter("signup");
+        if (sign != null) {
+            resp.sendRedirect("/registration");
+        }
         if(verifyUserExists(username, password)){
             User user = service.getUser(username, password);
             if(user.getToken() == null || user.getToken().equals("")) {

@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 /**
  * Created by Ayrat on 25.10.2016.
@@ -24,6 +25,7 @@ public class UserServlet extends HttpServlet {
 
     private UserService userService;
     private CarService carService;
+    private static Logger log = Logger.getLogger(UserServlet.class.getName());
 
     @Override
     public void init() throws ServletException {
@@ -55,12 +57,24 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String model = req.getParameter("model");
-        int mileage = Integer.parseInt(req.getParameter("mileage"));
-        CookieHelper cookieHelper = new CookieHelper(req);
-        int owner_id = userService.getUser(cookieHelper.getCookie("token")
-                .getValue()).getId();
-        carService.addCar(new Car(mileage, owner_id, model));
-        resp.sendRedirect("/list");
+        boolean logout = req.getParameter("logout") != null;
+        boolean addCar = req.getParameter("addcar") != null;
+        String token = (String)req.getAttribute("user_token");
+        if(token == null){
+            log.info("can't logout: user has not authorized");
+        }
+        if (logout && token != null) {
+            log.info("logging out");
+            userService.breakCurrentSession(token);
+            req.getServletContext().getRequestDispatcher("/login.jsp").forward(req, resp);
+//            resp.sendRedirect("/login");
+        }else if(addCar){
+            String model = req.getParameter("model");
+            int mileage = Integer.parseInt(req.getParameter("mileage"));
+            int owner_id = userService.getUser(token).getId();
+            Car car = new Car(mileage, owner_id, model);
+            carService.addCar(car);
+            log.info("adding car " + car);
+        }
     }
 }

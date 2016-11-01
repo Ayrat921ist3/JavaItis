@@ -44,6 +44,11 @@ public class UserJdbcUserDaoImpl implements UserDao {
                     " FROM auth_user" +
                     " WHERE token LIKE ?";
 
+    private static final String DELETE_TOKEN_SQL =
+            "UPDATE auth_user" +
+                    " SET token = ?" +
+                    " WHERE token LIKE ?";
+
     private final Connection connection;
 
     public UserJdbcUserDaoImpl(DataSource dataSource) {
@@ -143,6 +148,17 @@ public class UserJdbcUserDaoImpl implements UserDao {
             return new User(resultSet.getInt("user_id"), resultSet.getString("fio"),
                     resultSet.getString("password"), resultSet.getString("token"),
                     resultSet.getString("username"));
+        } catch (SQLException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    public void deleteToken(String token) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(DELETE_TOKEN_SQL);
+            preparedStatement.setString(1, null);
+            preparedStatement.setString(2, token);
+            preparedStatement.execute();
         } catch (SQLException e) {
             throw new IllegalArgumentException(e);
         }
