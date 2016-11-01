@@ -35,4 +35,15 @@
         <url-pattern>/list</url-pattern>
     </servlet-mapping>
 
+    //filters
+    <filter>
+        <filter-name>ListFilter</filter-name>
+        <filter-class>ru.khannanovayrat.filter.ListFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>ListFilter</filter-name>
+        <url-pattern>/list</url-pattern>
+    </filter-mapping>
+
 </web-app>

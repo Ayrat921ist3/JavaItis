@@ -2,21 +2,33 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
-    <title>Current users</title>
+    <title>User cars</title>
 </head>
 <body>
-<c:forEach items="${requestScope.myUsers}" var="currentUser">
-    <c:forEach items="${requestScope.myCars}" var="currentCar">
-        <c:if test="${currentUser.id == currentCar.owner_id}">
-            <h1>
-                <tr>
-                    <td><c:out value="${currentUser.id}"></c:out></td>
-                    <td><c:out value="${currentUser.fio}"></c:out></td>
-                    <td><c:out value="${currentUser.username}"></c:out></td>
-                </tr>
-            </h1>
-        </c:if>
-    </c:forEach>
+<form action="list" method="post">
+    <p><input type="text" name="model"> Модель</p>
+    <p><input type="text" name="mileage"> Пробег</p>
+    <p><input type="submit" value="add car"></p>
+</form>
+
+<tr>
+    <td>  car_id  </td>
+    <td>  model  </td>
+    <td>  mileage  </td>
+    <td>  owner_id  </td>
+</tr>
+<c:forEach items="${requestScope.myCars}" var="currentCar">
+    <%--<tr>--%>
+        <%--<td><c:out value="car cycle"/></td>--%>
+    <%--</tr>--%>
+        <h3>
+            <tr>
+                <td><c:out value="${currentCar.id}"/></td>
+                <td><c:out value="${currentCar.model}"/></td>
+                <td><c:out value="${currentCar.mileage}"/></td>
+                <td><c:out value="${currentCar.owner_id}"/></td>
+            </tr>
+        </h3>
 </c:forEach>
 
 </body>

@@ -16,6 +16,12 @@ public class Car {
         this.model = model;
     }
 
+    public Car(int mileage, int owner_id, String model) {
+        this.mileage = mileage;
+        this.owner_id = owner_id;
+        this.model = model;
+    }
+
     public int getId() {
         return id;
     }

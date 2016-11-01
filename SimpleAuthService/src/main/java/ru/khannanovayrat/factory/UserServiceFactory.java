@@ -24,10 +24,10 @@ public class UserServiceFactory {
     private UserServiceFactory() {
         Properties properties = new Properties();
         try {
-//            properties.load(new FileInputStream("C:\\Users\\Ayrat\\Desktop\\" +
-//                    "JavaItis\\SimpleAuthService\\src\\main\\resources\\service.properties"));
-            properties.load(new FileInputStream("C:\\Users\\KFU-user\\Desktop\\JavaItis\\" +
-                    "SimpleAuthService\\src\\main\\resources\\service.properties"));
+            properties.load(new FileInputStream("C:\\Users\\Ayrat\\Desktop\\" +
+                    "JavaItis\\SimpleAuthService\\src\\main\\resources\\service.properties"));
+//            properties.load(new FileInputStream("C:\\Users\\KFU-user\\Desktop\\JavaItis\\" +
+//                    "SimpleAuthService\\src\\main\\resources\\service.properties"));
             String className = properties.getProperty("service.className");
             Class clazz = Class.forName(className);
             Constructor constructor = clazz.getConstructor(UserDao.class);

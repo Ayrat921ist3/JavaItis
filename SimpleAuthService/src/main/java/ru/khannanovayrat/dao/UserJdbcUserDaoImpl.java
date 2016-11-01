@@ -21,26 +21,28 @@ public class UserJdbcUserDaoImpl implements UserDao {
                     " FROM auth_user" +
                     " WHERE user_id = ?";
 
-    //language = SQL
     private static final String USER_ADD_QUERY =
             "INSERT INTO auth_user (fio, password, username)" +
                     " VALUES (?, ?, ?)";
 
-    //language = SQL
     private  static final String USER_UPDATE_QUERY =
             "UPDATE auth_user" +
                     " SET fio = ?, password = ?, token = ?, username = ?" +
                     " WHERE user_id = ?";
-    //language = SQL
+
     private static final String USER_SELECT_PASS_USERNAME =
             "SELECT *" +
                     " FROM auth_user" +
                     " WHERE username = ? AND password = ?";
 
-    //language = SQL
     public static final String ALL_USERS_SQL =
             "SELECT *" +
                     " FROM auth_user";
+
+    private static final String USER_BY_TOKEN_SQL =
+            "SELECT *" +
+                    " FROM auth_user" +
+                    " WHERE token LIKE ?";
 
     private final Connection connection;
 
@@ -122,6 +124,20 @@ public class UserJdbcUserDaoImpl implements UserDao {
             PreparedStatement preparedStatement = connection.prepareStatement(USER_SELECT_PASS_USERNAME);
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, Password.hash(password));
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return new User(resultSet.getInt("user_id"), resultSet.getString("fio"),
+                    resultSet.getString("password"), resultSet.getString("token"),
+                    resultSet.getString("username"));
+        } catch (SQLException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    public User getUser(String token) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(USER_BY_TOKEN_SQL);
+            preparedStatement.setString(1, token);
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
             return new User(resultSet.getInt("user_id"), resultSet.getString("fio"),

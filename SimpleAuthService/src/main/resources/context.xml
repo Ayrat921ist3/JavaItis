@@ -3,11 +3,18 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
+    <!--<bean id="myDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">-->
+        <!--<property name="driverClassName" value="org.postgresql.Driver"/>-->
+        <!--<property name="url" value="jdbc:postgresql://localhost:5432/postgres"/>-->
+        <!--<property name="username" value="postgres"/>-->
+        <!--<property name="password" value="Vypapos88"/>-->
+    <!--</bean>-->
+
     <bean id="myDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="org.postgresql.Driver"/>
-        <property name="url" value="jdbc:postgresql://localhost:5432/postgres"/>
+        <property name="url" value="jdbc:postgresql://localhost:5432/authorized_users"/>
         <property name="username" value="postgres"/>
-        <property name="password" value="Vypapos88"/>
+        <property name="password" value="guitar012yamaha"/>
     </bean>
 
     <bean id="usersDao" class="ru.khannanovayrat.dao.UserJdbcUserDaoImpl">
@@ -16,7 +23,15 @@
     </bean>
 
     <bean id="userService" class="ru.khannanovayrat.service.UserService">
-        <constructor-arg ref="usersDao"></constructor-arg>
+        <constructor-arg ref="usersDao"/>
+    </bean>
+
+    <bean id="carsDao" class="ru.khannanovayrat.dao.CarJdbcDaoImpl">
+        <constructor-arg ref="myDataSource"/>
+    </bean>
+
+    <bean id="carsService" class="ru.khannanovayrat.service.CarService">
+        <constructor-arg ref="carsDao"/>
     </bean>
 
 </beans>

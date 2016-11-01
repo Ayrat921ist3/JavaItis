@@ -39,4 +39,8 @@ public class UserService {
     public List<User> getAll(){
         return userUserDao.getAll();
     }
+
+    public User getUser(String token) {
+        return userUserDao.getUser(token);
+    }
 }

@@ -18,4 +18,6 @@ public interface UserDao {
     List<User> getAll();
 
     User getUser(String name, String password);
+
+    User getUser(String token);
 }

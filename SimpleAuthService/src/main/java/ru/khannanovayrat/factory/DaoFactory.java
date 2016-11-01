@@ -24,10 +24,10 @@ public class DaoFactory {
     private DaoFactory(){
         Properties properties = new Properties();
         try {
-//            properties.load(new FileInputStream("C:\\Users\\Ayrat\\Desktop\\" +
-//                    "JavaItis\\SimpleAuthService\\src\\main\\resources\\userDao.properties"));
-            properties.load(new FileInputStream("C:\\Users\\KFU-user\\Desktop\\JavaItis" +
-                    "\\SimpleAuthService\\src\\main\\resources\\userDao.properties"));
+            properties.load(new FileInputStream("C:\\Users\\Ayrat\\Desktop\\" +
+                    "JavaItis\\SimpleAuthService\\src\\main\\resources\\userDao.properties"));
+//            properties.load(new FileInputStream("C:\\Users\\KFU-user\\Desktop\\JavaItis" +
+//                    "\\SimpleAuthService\\src\\main\\resources\\userDao.properties"));
             String userDaoClassName = properties.getProperty("dao.className");
             Class clazz = Class.forName(userDaoClassName);
             Constructor constructor = clazz.getConstructor(Connection.class);
