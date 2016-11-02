@@ -1,7 +1,9 @@
 package ru.khannanovayrat.servlet;
 
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import ru.khannanovayrat.config.JavaConfiguration;
 import ru.khannanovayrat.factory.UserServiceFactory;
 import ru.khannanovayrat.models.Car;
 import ru.khannanovayrat.models.User;
@@ -30,9 +32,10 @@ public class UserServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         super.init();
-        ApplicationContext context = new ClassPathXmlApplicationContext("classpath:context.xml");
+//        ApplicationContext context = new ClassPathXmlApplicationContext("classpath:context.xml");
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(JavaConfiguration.class);
         userService = (UserService) context.getBean("userService");
-        carService = (CarService) context.getBean("carsService");
+        carService = (CarService) context.getBean("carService");
     }
 
     @Override

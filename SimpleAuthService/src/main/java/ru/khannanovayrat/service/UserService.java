@@ -12,51 +12,51 @@ import java.util.logging.Logger;
  * Created by Ayrat on 25.10.2016.
  */
 public class UserService {
-    private UserDao userUserDao;
+    private UserDao usersDao;
     private static Logger log = Logger.getLogger(UserService.class.getName());
 
     public UserService(UserDao userUserDao) {
-        this.userUserDao = userUserDao;
+        this.usersDao = userUserDao;
     }
 
     public User getUser(int id){
         log.info("getting user, id = " + id);
-        return userUserDao.getUser(id);
+        return usersDao.getUser(id);
     }
 
     public User getUser(String username, String password){
         log.info("getting user, username = " + username +
                 " password = " + Password.hash(password));
-        return userUserDao.getUser(username, password);
+        return usersDao.getUser(username, password);
     }
 
     public void addUser(NewUser user){
         log.info("saving user, " + user);
-        userUserDao.saveUser(user);
+        usersDao.saveUser(user);
     }
 
     public void deleteUser(int id){
         log.info("deleting user, id = " + id);
-        userUserDao.deleteUser(id);
+        usersDao.deleteUser(id);
     }
 
     public void updateUser(User user){
         log.info("updating user, " + user);
-        userUserDao.update(user);
+        usersDao.update(user);
     }
 
     public List<User> getAll(){
         log.info("getting all users.. ");
-        return userUserDao.getAll();
+        return usersDao.getAll();
     }
 
     public User getUser(String token) {
         log.info("getting user, token = " + token);
-        return userUserDao.getUser(token);
+        return usersDao.getUser(token);
     }
 
     public void breakCurrentSession(String token) {
         log.info("deleting session with token " + token);
-        userUserDao.deleteToken(token);
+        usersDao.deleteToken(token);
     }
 }

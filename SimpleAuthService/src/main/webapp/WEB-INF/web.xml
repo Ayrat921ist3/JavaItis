@@ -37,6 +37,16 @@
         <servlet-name>MyUsersServlet</servlet-name>
         <url-pattern>/list</url-pattern>
     </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>UsersJsonServlet</servlet-name>
+        <servlet-class>ru.khannanovayrat.servlet.UsersJsonServlet</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>UsersJsonServlet</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
 
     //filters
     <filter>

@@ -49,6 +49,11 @@ public class UserJdbcUserDaoImpl implements UserDao {
                     " SET token = ?" +
                     " WHERE token LIKE ?";
 
+    private static final String GET_BY_AGE_SQL =
+            "SELECT *" +
+                    " FROM auth_user" +
+                    " WHERE user_id = ?";
+
     private final Connection connection;
 
     public UserJdbcUserDaoImpl(DataSource dataSource) {
