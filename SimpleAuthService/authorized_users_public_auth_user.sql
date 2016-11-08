@@ -1,0 +1,10 @@
+INSERT INTO public.auth_user (user_id, username, fio, token, password) VALUES (17, 'ayrat123', 'Ayrat', null, '202cb962ac59075b964b07152d234b70');
+INSERT INTO public.auth_user (user_id, username, fio, token, password) VALUES (18, 'ayrat1234', 'Ayrat', null, '202cb962ac59075b964b07152d234b70');
+INSERT INTO public.auth_user (user_id, username, fio, token, password) VALUES (19, 'a', '', null, 'd41d8cd98f00b204e9800998ecf8427e');
+INSERT INTO public.auth_user (user_id, username, fio, token, password) VALUES (20, 'ayrat1', 'Ayrat', null, '44d9dbb60b6c2c24922cd62d249412f9');
+INSERT INTO public.auth_user (user_id, username, fio, token, password) VALUES (16, 'ayrat', 'Ayrat', 'v03q4q1ogu9lgpggj4lsuj3ok1', '202cb962ac59075b964b07152d234b70');
+INSERT INTO public.auth_user (user_id, username, fio, token, password) VALUES (21, 'rasmap', 'Igor Leonidovich', 'm5vl929egp39nn8ddrti55abl0', 'e371569ead1decb341c5833d3fc6605e');
+INSERT INTO public.auth_user (user_id, username, fio, token, password) VALUES (23, 'admin1', 'Ayrat', null, 'a722c63db8ec8625af6cf71cb8c2d939');
+INSERT INTO public.auth_user (user_id, username, fio, token, password) VALUES (22, 'admin', 'Ayrat', null, '1a1dc91c907325c69271ddf0c944bc72');
+INSERT INTO public.auth_user (user_id, username, fio, token, password) VALUES (24, 'admin2', 'ghg', null, 'c1572d05424d0ecb2a65ec6a82aeacbf');
+INSERT INTO public.auth_user (user_id, username, fio, token, password) VALUES (25, 'admin3', 'fio', null, '3afc79b597f88a72528e864cf81856d2');
