@@ -1,5 +1,11 @@
 package ru.khannanovayrat.dao;
 
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCallback;
+import org.springframework.jdbc.core.metadata.OracleCallMetaDataProvider;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import ru.khannanovayrat.mapper.UserMapper;
 import ru.khannanovayrat.models.Car;
 import ru.khannanovayrat.models.NewUser;
 import ru.khannanovayrat.models.User;
@@ -8,32 +14,40 @@ import ru.khannanovayrat.util.Password;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * Created by Ayrat on 25.10.2016.
  */
 public class UserJdbcUserDaoImpl implements UserDao {
 
+    private NamedParameterJdbcTemplate paramTemplate;
+    private JdbcTemplate template;
+    private static Logger log = Logger.getLogger(UserJdbcUserDaoImpl.class.getName());
+    private Connection connection;
+
     //language=SQL
     private static final String USER_SELECT_QUERY =
             "SELECT *" +
                     " FROM auth_user" +
-                    " WHERE user_id = ?";
+                    " WHERE user_id = :userId";
 
     private static final String USER_ADD_QUERY =
             "INSERT INTO auth_user (fio, password, username)" +
-                    " VALUES (?, ?, ?)";
+                    " VALUES (:fio, :password, :username)";
 
     private  static final String USER_UPDATE_QUERY =
             "UPDATE auth_user" +
-                    " SET fio = ?, password = ?, token = ?, username = ?" +
-                    " WHERE user_id = ?";
+                    " SET fio = :fio, password = :password, token = :token, username = :username" +
+                    " WHERE user_id = :user_id";
 
     private static final String USER_SELECT_PASS_USERNAME =
             "SELECT *" +
                     " FROM auth_user" +
-                    " WHERE username = ? AND password = ?";
+                    " WHERE username = :username AND password = :password";
 
     public static final String ALL_USERS_SQL =
             "SELECT *" +
@@ -42,53 +56,46 @@ public class UserJdbcUserDaoImpl implements UserDao {
     private static final String USER_BY_TOKEN_SQL =
             "SELECT *" +
                     " FROM auth_user" +
-                    " WHERE token LIKE ?";
+                    " WHERE token LIKE :token";
 
     private static final String DELETE_TOKEN_SQL =
             "UPDATE auth_user" +
-                    " SET token = ?" +
-                    " WHERE token LIKE ?";
+                    " SET token = :newToken" +
+                    " WHERE token LIKE :token";
 
     private static final String GET_BY_AGE_SQL =
             "SELECT *" +
                     " FROM auth_user" +
                     " WHERE user_id = ?";
 
-    private final Connection connection;
 
     public UserJdbcUserDaoImpl(DataSource dataSource) {
+        paramTemplate = new NamedParameterJdbcTemplate(dataSource);
+        template = new JdbcTemplate(dataSource);
         try {
-            this.connection = dataSource.getConnection();
+            connection = dataSource.getConnection();
         } catch (SQLException e) {
-            throw new IllegalArgumentException(e);
+            e.printStackTrace();
         }
     }
 
 
     public User getUser(int id) {
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(USER_SELECT_QUERY);
-            preparedStatement.setInt(1, id);
-            ResultSet result = preparedStatement.executeQuery();
-            result.next();
-            return new User(result.getInt("user_id"), result.getString("fio"),
-                    result.getString("password"), result.getString("token"),
-                    result.getString("username"));
-        } catch (SQLException e) {
-            throw new IllegalArgumentException(e);
-        }
+        Map<String, Object> paramsMap = new HashMap<String, Object>();
+        paramsMap.put("userId", id);
+        return paramTemplate.queryForObject(USER_SELECT_QUERY, paramsMap, new UserMapper());
     }
 
     public void saveUser(NewUser user) {
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(USER_ADD_QUERY);
-            preparedStatement.setString(1, user.getFio());
-            preparedStatement.setString(2, user.getPassword());
-            preparedStatement.setString(3, user.getUsername());
-            preparedStatement.execute();
-        } catch (SQLException e) {
-            throw new IllegalArgumentException(e);
-        }
+        Map<String, Object> paramsMap = new HashMap<String, Object>();
+        paramsMap.put("fio", user.getFio());
+        paramsMap.put("username", user.getUsername());
+        paramsMap.put("password", user.getPassword());
+        paramTemplate.execute(USER_ADD_QUERY, paramsMap, new PreparedStatementCallback() {
+            public Object doInPreparedStatement(PreparedStatement preparedStatement) throws SQLException, DataAccessException {
+                return preparedStatement.executeUpdate();
+            }
+        });
     }
 
     public void deleteUser(int id) {
@@ -100,72 +107,45 @@ public class UserJdbcUserDaoImpl implements UserDao {
     }
 
     public void update(User user) {
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(USER_UPDATE_QUERY);
-            preparedStatement.setString(1, user.getFio());
-            preparedStatement.setString(2, user.getPassword());
-            preparedStatement.setString(3, user.getToken());
-            preparedStatement.setString(4, user.getUsername());
-            preparedStatement.setInt(5, user.getId());
-            preparedStatement.execute();
-        } catch (SQLException e) {
-            throw new IllegalArgumentException(e);
-        }
+        Map<String, Object> paramsMap = new HashMap<String, Object>();
+        paramsMap.put("fio", user.getFio());
+        paramsMap.put("password", user.getPassword());
+        paramsMap.put("token", user.getToken());
+        paramsMap.put("username", user.getUsername());
+        paramsMap.put("user_id", user.getId());
+        paramTemplate.execute(USER_UPDATE_QUERY, paramsMap, new PreparedStatementCallback() {
+            public Object doInPreparedStatement(PreparedStatement preparedStatement) throws SQLException, DataAccessException {
+                return preparedStatement.executeUpdate();
+            }
+        });
     }
 
     public List<User> getAll() {
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(ALL_USERS_SQL);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            List<User> users = new ArrayList<User>();
-            while (resultSet.next()){
-                users.add(new User(resultSet.getInt("user_id"), resultSet.getString("fio"),
-                    resultSet.getString("password"), resultSet.getString("token"),
-                        resultSet.getString("username")));
-            }
-            return users;
-        } catch (SQLException e) {
-            throw new IllegalArgumentException(e);
-        }
+        List list = template.queryForList(ALL_USERS_SQL);
+        return list;
     }
 
     public User getUser(String username, String password) {
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(USER_SELECT_PASS_USERNAME);
-            preparedStatement.setString(1, username);
-            preparedStatement.setString(2, Password.hash(password));
-            ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-            return new User(resultSet.getInt("user_id"), resultSet.getString("fio"),
-                    resultSet.getString("password"), resultSet.getString("token"),
-                    resultSet.getString("username"));
-        } catch (SQLException e) {
-            throw new IllegalArgumentException(e);
-        }
+        Map<String, Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("username", username);
+        paramMap.put("password", password);
+        return paramTemplate.queryForObject(USER_SELECT_PASS_USERNAME, paramMap, new UserMapper());
     }
 
     public User getUser(String token) {
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(USER_BY_TOKEN_SQL);
-            preparedStatement.setString(1, token);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-            return new User(resultSet.getInt("user_id"), resultSet.getString("fio"),
-                    resultSet.getString("password"), resultSet.getString("token"),
-                    resultSet.getString("username"));
-        } catch (SQLException e) {
-            throw new IllegalArgumentException(e);
-        }
+        Map<String, Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("token", token);
+        return paramTemplate.queryForObject(USER_BY_TOKEN_SQL, paramMap, new UserMapper());
     }
 
     public void deleteToken(String token) {
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(DELETE_TOKEN_SQL);
-            preparedStatement.setString(1, null);
-            preparedStatement.setString(2, token);
-            preparedStatement.execute();
-        } catch (SQLException e) {
-            throw new IllegalArgumentException(e);
-        }
+        Map<String, Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("token", token);
+        paramMap.put("newToken", null);
+        paramTemplate.execute(DELETE_TOKEN_SQL, paramMap, new PreparedStatementCallback() {
+            public Object doInPreparedStatement(PreparedStatement preparedStatement) throws SQLException, DataAccessException {
+                return preparedStatement.executeUpdate();
+            }
+        });
     }
 }

@@ -9,6 +9,9 @@ public class Car {
     private int owner_id;
     private String model;
 
+    public Car() {
+    }
+
     public Car(int id, int mileage, int owner_id, String model) {
         this.id = id;
         this.mileage = mileage;

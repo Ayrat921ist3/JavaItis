@@ -36,7 +36,7 @@ public class JavaConfiguration {
         dataSource.setDriverClassName("org.postgresql.Driver");
         dataSource.setUrl("jdbc:postgresql://localhost:5432/authorized_users");
         dataSource.setUsername("postgres");
-        dataSource.setPassword("guitar012yamaha");
+        dataSource.setPassword("Vypapos88");
         return dataSource;
     }
 
