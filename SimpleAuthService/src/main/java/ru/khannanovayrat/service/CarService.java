@@ -1,5 +1,6 @@
 package ru.khannanovayrat.service;
 
+import org.springframework.stereotype.Service;
 import ru.khannanovayrat.dao.CarDao;
 import ru.khannanovayrat.models.Car;
 
@@ -8,6 +9,7 @@ import java.util.List;
 /**
  * Created by Ayrat on 01.11.2016.
  */
+@Service
 public class CarService {
 
     private CarDao carDao;

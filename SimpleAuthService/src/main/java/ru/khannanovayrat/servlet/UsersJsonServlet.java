@@ -1,8 +1,7 @@
 package ru.khannanovayrat.servlet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import ru.khannanovayrat.config.JavaConfiguration;
+import org.springframework.beans.factory.annotation.Autowired;
 import ru.khannanovayrat.models.Car;
 import ru.khannanovayrat.models.User;
 import ru.khannanovayrat.service.CarService;
@@ -35,15 +34,14 @@ public class UsersJsonServlet extends HttpServlet{
         USER_CARS
     }
 
+    @Autowired
     private UserService userService;
+    @Autowired
     private CarService carService;
 
     @Override
     public void init() throws ServletException {
         super.init();
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(JavaConfiguration.class);
-        userService = (UserService) context.getBean("userService");
-        carService = (CarService) context.getBean("carService");
     }
 
     private class RestRequest{

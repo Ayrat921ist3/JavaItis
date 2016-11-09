@@ -1,7 +1,13 @@
 package ru.khannanovayrat.util;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Controller;
+import ru.khannanovayrat.config.WebConfig;
 import ru.khannanovayrat.factory.ConnectionFactory;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,11 +18,8 @@ import java.sql.SQLException;
  */
 public class Verifier {
 
-    private static Connection connection;
+    private Connection connection;
 
-    static {
-        connection = ConnectionFactory.getInstance().getConnection();
-    }
 
     //language = SQL
     private static final String CHECK_USERNAME_SQL =
@@ -35,7 +38,11 @@ public class Verifier {
                     " FROM auth_user" +
                     " WHERE token LIKE ?";
 
-    public static boolean verifyUsernameExist(String username){
+    public Verifier() {
+        connection = ConnectionFactory.getInstance().getConnection();
+    }
+
+    public boolean verifyUsernameExist(String username){
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(CHECK_USERNAME_SQL);
             preparedStatement.setString(1, username);
@@ -46,7 +53,7 @@ public class Verifier {
         }
     }
 
-    public static boolean verifyUserExists(String username, String password){
+    public boolean verifyUserExists(String username, String password){
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(CHECk_USER_SQL);
             preparedStatement.setString(1, username);
@@ -58,7 +65,7 @@ public class Verifier {
         }
     }
 
-    public static boolean verifyTokenValid(String token){
+    public boolean verifyTokenValid(String token){
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(CHECK_TOKEN_SQL);
             preparedStatement.setString(1, token);

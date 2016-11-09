@@ -84,7 +84,7 @@ public class UserJdbcUserDaoImpl implements UserDao {
         Map<String, Object> paramsMap = new HashMap<String, Object>();
         paramsMap.put("fio", user.getFio());
         paramsMap.put("username", user.getUsername());
-        paramsMap.put("password", user.getPassword());
+        paramsMap.put("password", Password.hash(user.getPassword()));
         paramTemplate.execute(USER_ADD_QUERY, paramsMap, new PreparedStatementCallback() {
             public Object doInPreparedStatement(PreparedStatement preparedStatement) throws SQLException, DataAccessException {
                 return preparedStatement.executeUpdate();

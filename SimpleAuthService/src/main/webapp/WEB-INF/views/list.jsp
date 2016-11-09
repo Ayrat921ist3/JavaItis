@@ -18,15 +18,15 @@
     <td>  mileage  </td>
     <td>  owner_id  </td>
 </tr>
-<c:forEach items="${myCars}" var="currentCar">
-        <h3>
-            <tr>
-                <td><c:out value="${currentCar.id}"/></td>
-                <td><c:out value="${currentCar.model}"/></td>
-                <td><c:out value="${currentCar.mileage}"/></td>
-                <td><c:out value="${currentCar.owner_id}"/></td>
-            </tr>
-        </h3>
+<c:forEach var="currentCar" items="${myCars}">
+    <h3>
+        <tr>
+            <td><c:out value="${currentCar.car_id}"/></td>
+            <td><c:out value="${currentCar.fullname}"/></td>
+            <td><c:out value="${currentCar.mileage}"/></td>
+            <td><c:out value="${currentCar.user_id}"/></td>
+        </tr>
+    </h3>
 </c:forEach>
 
 </body>

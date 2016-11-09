@@ -23,7 +23,8 @@ public class ListFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         for (Cookie cookie : ((HttpServletRequest)servletRequest).getCookies()){
             String cookieValue = cookie.getValue();
-            if (cookie.getName().equals("token") && Verifier.verifyTokenValid(cookieValue)){
+            Verifier verifier = new Verifier();
+            if (cookie.getName().equals("token") && verifier.verifyTokenValid(cookieValue)){
                 log.info("Doing filter, \n" +
                         ".. Token found");
                 servletRequest.setAttribute("user_token", cookieValue);

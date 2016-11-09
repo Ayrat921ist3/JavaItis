@@ -9,17 +9,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import ru.khannanovayrat.config.JavaConfiguration;
 import ru.khannanovayrat.models.User;
+import ru.khannanovayrat.service.CarService;
 import ru.khannanovayrat.service.UserService;
 import ru.khannanovayrat.util.Token;
+import ru.khannanovayrat.util.Verifier;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.logging.Logger;
 
-import static ru.khannanovayrat.util.Verifier.verifyUserExists;
+
 
 /**
  * Created by KFU-user on 09.11.2016.
@@ -30,11 +31,9 @@ public class LoginController {
     private Logger log = Logger.getLogger(LoginController.class.getName());
     @Autowired
     private UserService userService;
+    @Autowired
+    private CarService carService;
 
-    public LoginController() {
-//        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(JavaConfiguration.class);
-//        userService = context.getBean(UserService.class);
-    }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView getLogin() throws Exception {
@@ -45,7 +44,9 @@ public class LoginController {
     }
 
     @RequestMapping(value = "login", method = RequestMethod.POST)
-    public ModelAndView postLogin(HttpServletResponse httpServletResponse, @RequestParam("username") String username,
+    public ModelAndView postLogin(HttpServletResponse httpServletResponse,
+                                  HttpServletRequest req,
+                                  @RequestParam("username") String username,
                                   @RequestParam("password") String password,
                                   @RequestParam(value = "signup", required = false) String sign){
         log.info("post method");
@@ -56,16 +57,19 @@ public class LoginController {
             modelAndView.setViewName("registration");
             return modelAndView;
         }
-        if(verifyUserExists(username, password)){
+        Verifier verifier = new Verifier();
+        if(verifier.verifyUserExists(username, password)){
             User user = userService.getUser(username, password);
             if(user.getToken() == null || user.getToken().equals("")) {
-                String token = Token.nextSessionId();
-                Cookie cookie = new Cookie("token", token);
-                user.setToken(token);
+                String newToken = Token.nextSessionId();
+                Cookie cookie = new Cookie("token", newToken);
+                user.setToken(newToken);
                 userService.updateUser(user);
                 httpServletResponse.addCookie(cookie);
+                modelAndView.addObject("myCars", carService.getAll(user.getId()));
+                modelAndView.setViewName("list");
             }
-            modelAndView.setViewName("list");
+
         }
         return modelAndView;
     }

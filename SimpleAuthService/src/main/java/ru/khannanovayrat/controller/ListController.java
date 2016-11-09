@@ -59,6 +59,8 @@ public class ListController {
             Car car = new Car(mileage, owner_id, model);
             carService.addCar(car);
             log.info("adding car " + car);
+            User currentUser = userService.getUser(token);
+            modelAndView.addObject("myCars", carService.getAll(currentUser.getId()));
         }
         return modelAndView;
     }

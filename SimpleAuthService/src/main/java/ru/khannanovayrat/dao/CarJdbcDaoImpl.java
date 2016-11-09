@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * Created by KFU-user on 28.10.2016.
@@ -23,6 +24,8 @@ public class CarJdbcDaoImpl implements CarDao{
 
     private NamedParameterJdbcTemplate paramTemplate;
     private JdbcTemplate template;
+
+    private Logger log = Logger.getLogger(CarJdbcDaoImpl.class.getName());
 
     private static final String ADD_CAR_SQL =
             "INSERT INTO cars (mileage, fullname, user_id)" +
@@ -41,6 +44,7 @@ public class CarJdbcDaoImpl implements CarDao{
 
 
     public List<Car> getAll(int id){
+        log.info("getting all cars for user " + id);
         Map<String, Object> paramMap = new HashMap<String, Object>();
         paramMap.put("userId", id);
         List cars = paramTemplate.queryForList(ALL_CARS_SQL, paramMap);

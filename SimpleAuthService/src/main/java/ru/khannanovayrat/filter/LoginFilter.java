@@ -24,8 +24,9 @@ public class LoginFilter implements Filter {
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         CookieHelper cookieHelper = new CookieHelper((HttpServletRequest)req);
         Cookie tokenCookie = cookieHelper.getCookie("token");
+        Verifier verifier = new Verifier();
         if(tokenCookie != null &&
-                Verifier.verifyTokenValid(tokenCookie.getValue())){
+                verifier.verifyTokenValid(tokenCookie.getValue())){
             log.info("doing login filter");
             ((HttpServletResponse)resp).sendRedirect("/list");
         }else{
