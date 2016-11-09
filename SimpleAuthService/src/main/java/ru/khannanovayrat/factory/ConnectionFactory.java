@@ -21,15 +21,15 @@ public class ConnectionFactory {
     private ConnectionFactory() {
         Properties properties = new Properties();
         try {
-            properties.load(new FileInputStream("C:\\Users\\Ayrat\\Desktop\\JavaItis" +
-                    "\\SimpleAuthService\\src\\main\\resources\\connection.properties"));
-//            properties.load(new FileInputStream("C:\\Users\\KFU-user\\Desktop\\JavaItis" +
+//            properties.load(new FileInputStream("C:\\Users\\Ayrat\\Desktop\\JavaItis" +
 //                    "\\SimpleAuthService\\src\\main\\resources\\connection.properties"));
+            properties.load(new FileInputStream("C:\\Users\\KFU-user\\Desktop\\JavaItis" +
+                    "\\SimpleAuthService\\src\\main\\resources\\connection.properties"));
             String user = properties.getProperty("db.user");
             String password = properties.getProperty("db.password");
             String driver = properties.getProperty("db.driver");
-            String url = properties.getProperty("db.url");
-//            String url = properties.getProperty("db.url_itis");
+//            String url = properties.getProperty("db.url");
+            String url = properties.getProperty("db.url_itis");
             Class.forName(driver);
             connection = DriverManager.getConnection(url, user, password);
         } catch (IOException e) {

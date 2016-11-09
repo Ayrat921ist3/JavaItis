@@ -27,7 +27,6 @@ public class UserJdbcUserDaoImpl implements UserDao {
     private NamedParameterJdbcTemplate paramTemplate;
     private JdbcTemplate template;
     private static Logger log = Logger.getLogger(UserJdbcUserDaoImpl.class.getName());
-    private Connection connection;
 
     //language=SQL
     private static final String USER_SELECT_QUERY =
@@ -72,11 +71,6 @@ public class UserJdbcUserDaoImpl implements UserDao {
     public UserJdbcUserDaoImpl(DataSource dataSource) {
         paramTemplate = new NamedParameterJdbcTemplate(dataSource);
         template = new JdbcTemplate(dataSource);
-        try {
-            connection = dataSource.getConnection();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
 
@@ -128,7 +122,7 @@ public class UserJdbcUserDaoImpl implements UserDao {
     public User getUser(String username, String password) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         paramMap.put("username", username);
-        paramMap.put("password", password);
+        paramMap.put("password", Password.hash(password));
         return paramTemplate.queryForObject(USER_SELECT_PASS_USERNAME, paramMap, new UserMapper());
     }
 

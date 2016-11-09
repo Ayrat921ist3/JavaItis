@@ -1,5 +1,6 @@
 package ru.khannanovayrat.service;
 
+import org.springframework.stereotype.Service;
 import ru.khannanovayrat.dao.UserDao;
 import ru.khannanovayrat.models.NewUser;
 import ru.khannanovayrat.models.User;
@@ -11,6 +12,7 @@ import java.util.logging.Logger;
 /**
  * Created by Ayrat on 25.10.2016.
  */
+@Service
 public class UserService {
     private UserDao usersDao;
     private static Logger log = Logger.getLogger(UserService.class.getName());
