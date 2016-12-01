@@ -13,12 +13,12 @@
         </init-param>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>ru.khannanovayrat.WebConfig</param-value>
+            <param-value>ru.khannanovayrat.config.WebConfig</param-value>
         </init-param>
     </servlet>
 
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
-        <url-pattern>/</url-pattern>
+        <url-pattern>/*</url-pattern>
     </servlet-mapping>
 </web-app>
