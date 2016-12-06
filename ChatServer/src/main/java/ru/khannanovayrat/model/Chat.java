@@ -1,19 +1,15 @@
 package ru.khannanovayrat.model;
 
 /**
- * Created by KFU-user on 24.11.2016.
+ * Created by Ayrat on 06.12.2016.
  */
-public class User {
+public class Chat {
 
     private int id;
     private String name;
+    private int ownerId;
 
-    public User() {
-    }
-
-    public User(int id, String name) {
-        this.id = id;
-        this.name = name;
+    public Chat() {
     }
 
     public int getId() {
@@ -30,5 +26,13 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(int ownerId) {
+        this.ownerId = ownerId;
     }
 }
